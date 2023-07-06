@@ -203,7 +203,7 @@ a {
     height: 30px;
   }
   .aside {
-    display: block;
+    display: none;
   }
   .items {
     display: none;
