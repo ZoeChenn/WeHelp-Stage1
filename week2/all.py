@@ -24,6 +24,7 @@ find_and_print({
 # # Task2
 def calculate_sum_of_bonus(data):
   print("====Task2====")
+  sum = 0
   for employee in data["employees"]:
     if isinstance(employee["salary"], str): # 判斷薪水型態是否為字串
       if "USD" in employee["salary"]:
@@ -39,27 +40,26 @@ def calculate_sum_of_bonus(data):
     performance = employee["performance"] # 判別表現
 
     if performance == "above average":
-      bonus = salary * 0.1
-    elif performance == "average":
       bonus = salary * 0.08
-    elif performance == "below average":
+    elif performance == "average":
       bonus = salary * 0.05
+    elif performance == "below average":
+      bonus = salary * 0.03
     else:
       bonus = 0
 
     role = employee["role"] # 判別角色加乘
 
     if role == "Engineer":
-      bonus = int(bonus + 4000)
+      bonus = int(bonus + 500)
     elif role == "CEO":
-      bonus = int(bonus + 5000)
+      bonus = int(bonus + 1000)
     elif role == "Sales":
-      bonus = int(bonus + 4000)
+      bonus = int(bonus + 500)
     else:
       bonus = 0
-
-    print(f"{employee['name']}'s bonus: {bonus}")
-
+    sum = sum + bonus
+  print(sum) 
 
 calculate_sum_of_bonus({ 
   "employees":[

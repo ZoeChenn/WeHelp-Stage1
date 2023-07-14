@@ -25,6 +25,7 @@ findAndPrint({
 /* Task2 */
 function calculateSumOfBonus(data) {
   console.log("====Task2====");
+  sum = 0;
   for (let employee of data["employees"]) {
     let salary = 0;
     if (typeof employee["salary"] === "string") {
@@ -44,25 +45,25 @@ function calculateSumOfBonus(data) {
 
     let bonus = 0;
     if (performance === "above average") {
-      bonus = salary * 0.1;
-    } else if (performance === "average") {
       bonus = salary * 0.08;
-    } else if (performance === "below average") {
+    } else if (performance === "average") {
       bonus = salary * 0.05;
+    } else if (performance === "below average") {
+      bonus = salary * 0.03;
     }
 
     const role = employee["role"]; // 判別角色加乘
 
     if (role === "Engineer") {
-      bonus += 4000;
+      bonus += 500;
     } else if (role === "CEO") {
-      bonus += 5000;
+      bonus += 1000;
     } else if (role === "Sales") {
-      bonus += 4000;
+      bonus += 500;
     }
-
-    console.log(`${employee["name"]}'s bonus: ${bonus}`);
+      sum = sum + bonus;
   }
+  console.log(sum);
 }
 
 calculateSumOfBonus({
