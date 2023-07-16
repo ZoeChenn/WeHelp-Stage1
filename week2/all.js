@@ -133,3 +133,30 @@ console.log("====Task4====");
 getNumber(1); // print 4
 getNumber(5); // print 10
 getNumber(10); // print 15
+
+/*-------------------------------------------------*/
+
+/* Task5 */
+
+function findIndexOfCar(seats, status, number) {
+  let difference = [];
+  for (let i = 0; i < status.length; i++) {
+    if (status[i] === 1) {
+      if (seats[i] - number >= 0) {
+        difference.push(seats[i]);
+      }
+    }
+  }
+  // 判斷 difference 是不是空的，True 就回傳值，False 就回傳 -1
+  let answer = difference.length > 0 ? Math.min(...difference) : -1;
+  if (answer === -1) {
+    console.log(-1);
+  } else {
+    console.log(seats.indexOf(answer));
+  }
+}
+
+console.log("====Task5====");
+findIndexOfCar([3, 1, 5, 4, 2], [0, 1, 0, 1, 1], 2); // print 4
+findIndexOfCar([1, 0, 5, 1, 3], [0, 1, 0, 1, 1], 4); // print -1
+findIndexOfCar([4, 6, 5, 8], [0, 1, 1, 1], 4); // print 2

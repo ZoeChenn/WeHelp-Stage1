@@ -119,3 +119,23 @@ print("====Task4====")
 get_number(1) # print 4
 get_number(5) # print 10
 get_number(10) # print 15
+
+######################################################
+
+# # Task5
+def find_index_of_car(seats, status, number):
+  difference = []
+  for i, sta in enumerate(status):
+    if sta == 1:
+      if seats[i] - number >= 0:
+        difference.append(seats[i])
+  answer = min(difference) if difference else -1
+  if answer == -1:
+    print(-1)
+  else:
+    print(seats.index(answer))
+
+print("====Task5====")
+find_index_of_car([3, 1, 5, 4, 2], [0, 1, 0, 1, 1], 2) # print 4
+find_index_of_car([1, 0, 5, 1, 3], [0, 1, 0, 1, 1], 4) # print -1
+find_index_of_car([4, 6, 5, 8], [0, 1, 1, 1], 4) # print 2
