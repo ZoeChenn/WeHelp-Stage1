@@ -1,0 +1,238 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap');
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+  v2.0 | 20110126
+  License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+*,*::before,*::after{
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  background-size: cover;
+}
+
+.header {
+  font-size: 20px;
+  line-height: 1.5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.items {
+  display: flex;
+}
+
+.item, li {
+  margin-left: 20px;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+.mobile {
+  display: none;
+}
+
+.banner, h2 {
+  height: 250px;
+  background-color: #ADD8E6;
+  display: flex;
+  font-size: 40px;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.card-promo {
+  display: flex;
+  align-items: center;
+  background-color: #ADD8E6;
+  width: 32%;
+  margin-top: 20px;
+}
+
+.card-promo img {
+  width: 80px;
+  height: 50px;
+}
+
+.card-promo .imgDiv {
+  height: 50px;
+}
+
+.card-promo h3 {
+  margin-left: 10px;
+}
+
+.card-title {
+  width: 15%;
+  position: relative;
+}
+
+.card-title::after{
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: url('../Week1/content-bg.png');
+  opacity: 0.4;
+  z-index: -1;
+}
+
+.imgDiv {
+  height: 115px;
+}
+
+.card-title img {
+  width: 100%;
+  height: 115px;
+  object-fit: cover;
+}
+
+.card-title h3 {
+  text-align: center;
+  margin: 10px 0;
+  align-items: center;
+}
+
+.star {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.mobile_open {
+  display: none;
+}
+
+.aside {
+  display: none;
+  width: 140px;
+  margin-top: 30px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 5px 10px -5px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.aside_menu li {
+  margin: 20px 20px;
+  text-align: center;
+}
+
+@media(max-width:1200px){
+  .container {
+    width: 90%;
+  }
+  .cards {
+    gap: 5px;
+  }
+  .card-promo {
+    width: 49%;
+  }
+  .card-promo:nth-child(3) {
+    width: 100%;
+  }
+  .card-title {
+    width: 24%;
+    margin-top: 10px;
+  }
+}
+
+@media(max-width:600px){
+  .mobile_open {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+  }
+  .aside {
+    display: none;
+  }
+  .items {
+    display: none;
+  }
+  .card-promo {
+    width: 100%;
+  }
+  .card-title {
+    width: 100%;
+  }
+  .imgDiv {
+    height: 200px;
+  }
+  .card-title img{
+    height: 200px;
+  }
+}
