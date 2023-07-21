@@ -170,11 +170,11 @@ a {
   right: 5px;
 }
 
-.mobile_open {
+.mobileOpen {
   display: none;
 }
 
-.aside {
+.asideMenu {
   display: none;
   width: 140px;
   margin-top: 30px;
@@ -184,13 +184,18 @@ a {
   top: 0;
   bottom: 0;
   right: 0;
-  z-index: 1;
+  z-index: 999;
 }
 
-.aside_menu li {
+.asideMenu li {
   margin: 20px 20px;
   text-align: center;
 }
+
+.showMenu .asideMenu {
+  display: block;
+}
+
 
 @media(max-width:1200px){
   .container {
@@ -212,13 +217,10 @@ a {
 }
 
 @media(max-width:600px){
-  .mobile_open {
+  .mobileOpen {
     display: inline-block;
     width: 30px;
     height: 30px;
-  }
-  .aside {
-    display: none;
   }
   .items {
     display: none;

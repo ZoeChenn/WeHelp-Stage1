@@ -1,7 +1,13 @@
-$(function () {
-  $( "#mobile_open" ).on( "click", function() {
-    $( "#aside" ).toggle('fast');
-  });
+// 漢堡選單
+const hamburgerMenu = document.querySelector('.mobileOpen');
+const asideMenu = document.querySelector('.aside');
+// console.log(hamburgerMenu)
+// console.log(asideMenu)
+
+hamburgerMenu.addEventListener('click', (e) => {
+  asideMenu.classList.toggle('showMenu');
+  // console.log("hello")
+  // console.log(asideMenu)
 });
 
 src="https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment.json"
@@ -20,7 +26,6 @@ function renderData(data) {
   let titleCount = 0;
   
   data.forEach(function(attraction,index) {
-
   // 創建外層的 <div> 元素
   const cardDiv = document.createElement("div");
   
