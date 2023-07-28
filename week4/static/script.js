@@ -3,17 +3,9 @@ const agree = document.querySelector("#agree")
 const num = document.querySelector("#num")
 const button = document.querySelector("#button")
 
-agree.addEventListener('click', ()=>{
-  // console.log(agree.value)
-  if (agree.value === 'false'){
-    agree.value = 'true'
-  }else {
-    agree.value = 'false'
-  }
-})
-
 submit.addEventListener('click', (e)=>{
-  if (agree.value !== 'true'){
+  console.log(agree.checked)
+  if (!agree.checked){
     alert("Please check the checkbox first")
     e.preventDefault()
   }
@@ -28,3 +20,13 @@ button.addEventListener('click', (e)=>{
     num.value = ''
   }
 })
+
+button.addEventListener("click", (e) => {
+  // console.log(num.value)
+  let formNum = num.value
+  let newPath = "/square/" + String(formNum);
+  // console.log(newPath)
+  window.location.href = newPath;
+  // console.log(window.location.href)
+  e.preventDefault() // 避免表單執行預設提交行為，才能將新網址貼到網址列去作用
+});

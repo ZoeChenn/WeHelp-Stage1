@@ -51,18 +51,24 @@ def signout():
   return redirect(url_for('index'))
 
 # 建立路徑 /square 對應的處理函式
-@app.route("/square")
-def square():
-  num = request.args.get('num', '')
-  # return redirect(f"/square/{num}")
-  return redirect("/square/" + num)
-
-# 建立路徑 /square/<int:num> 對應的處理函式
 @app.route("/square/<int:num>")
-def displaySquare(num):
+def square(num):
   num = int(num)
   squareNum = num * num
   return render_template("square.html", data=squareNum)
+
+# # 建立路徑 /square 對應的處理函式
+# @app.route("/square")
+# def square():
+#   num = request.args.get('num', '')
+#   return redirect("/square/" + num)
+
+# # 建立路徑 /square/<int:num> 對應的處理函式
+# @app.route("/square/<int:num>")
+# def displaySquare(num):
+#   num = int(num)
+#   squareNum = num * num
+#   return render_template("square.html", data=squareNum)
 
 # 啟動網站伺服器
 app.run(port=3000)
