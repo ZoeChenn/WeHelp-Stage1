@@ -11,22 +11,17 @@ submit.addEventListener('click', (e)=>{
   }
 })
 
-button.addEventListener('click', (e)=>{
+button.addEventListener("click", (e) => {
+  let formNum = num.value
+  let newPath = "/square/" + String(formNum);
+
   if (num.value > 0){
     console.log(num.value)
+    window.location.href = newPath;
+    e.preventDefault() // 避免表單執行預設提交行為，才能將新網址貼到網址列去作用
   }else {
     alert("Please enter a positive number")
     e.preventDefault()
     num.value = ''
   }
-})
-
-button.addEventListener("click", (e) => {
-  // console.log(num.value)
-  let formNum = num.value
-  let newPath = "/square/" + String(formNum);
-  // console.log(newPath)
-  window.location.href = newPath;
-  // console.log(window.location.href)
-  e.preventDefault() // 避免表單執行預設提交行為，才能將新網址貼到網址列去作用
 });
