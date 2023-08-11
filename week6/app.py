@@ -1,5 +1,5 @@
 import os
-import mysql.connector
+from mysql.connector import pooling
 from flask import Flask
 from flask import request
 from flask import redirect, url_for
@@ -7,7 +7,7 @@ from flask import render_template
 from flask import session
 from dotenv import load_dotenv
 
-# 加載環境變數配置文件
+# 載入環境變數配置文件
 load_dotenv()
 
 # 使用 os.getenv() 讀取環境變數
@@ -16,6 +16,16 @@ DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_HOST = os.getenv("DB_HOST")
 DB_NAME = os.getenv("DB_NAME")
 SECRET_KEY = os.getenv("SECRET_KEY")
+
+# 建立並設定連接池
+pool = pooling.MySQLConnectionPool(
+  pool_name = "myPool",  # 連接池名稱
+  pool_size = 10,  # 連接池大小
+  user = DB_USER,
+  password = DB_PASSWORD,
+  host = DB_HOST,
+  database = DB_NAME
+)
 
 # 建立 Application 物件
 app = Flask( 
@@ -28,34 +38,57 @@ app = Flask(
 # 設定 Session 密鑰
 app.secret_key = SECRET_KEY
 
-# 連線到資料庫
-con = mysql.connector.connect(
-  user = DB_USER,
-  password = DB_PASSWORD,
-  host = DB_HOST,
-  database = DB_NAME
-)
-print("資料庫連線成功")
+# # 連線到資料庫
+# con = mysql.connector.connect(
+#   user = DB_USER,
+#   password = DB_PASSWORD,
+#   host = DB_HOST,
+#   database = DB_NAME
+# )
+# print("資料庫連線成功")
 
-# 建立 Cursor 物件，用來對資料庫下 SQL 指令
-cursor = con.cursor()
+# # 建立 Cursor 物件，用來對資料庫下 SQL 指令
+# cursor = con.cursor()
+
+# # 建立連接池連線 及 Cursor 物件
+# connection = pool.get_connection()
+# cursor = connection.cursor()
+
+# 建立連線
+def getConn():
+  conn = pool.get_connection()
+  cursor = conn.cursor()
+  print("建立連線")
+  return conn, cursor
+
+# 關閉連線
+def dispose(cursor, conn):
+  cursor.close()
+  conn.close()
+  print("關閉連線")
 
 # 檢查帳號是否重複
 def check_account(account):
+  conn, cursor = getConn() # 建立連線
   cursor.execute("SELECT * FROM member WHERE username = %s", (account,))
   result = cursor.fetchone()
+  dispose(cursor, conn) # 關閉連線
   return result is not None
 
 # 檢查帳號密碼是否吻合已註冊之會員資料
 def check_member(account, password):
+  conn, cursor = getConn() # 建立連線
   cursor.execute("SELECT * FROM member WHERE (username, password) = (%s, %s)", (account, password))
   result = cursor.fetchone()
+  dispose(cursor, conn) # 關閉連線
   return result is not None
 
 # 新增帳號到資料庫
 def add_account(name, account, password):
-    cursor.execute("INSERT INTO member (name, username, password) VALUES (%s, %s, %s)", (name, account, password))
-    con.commit()
+  conn, cursor = getConn() # 建立連線
+  cursor.execute("INSERT INTO member (name, username, password) VALUES (%s, %s, %s)", (name, account, password))
+  conn.commit()
+  dispose(cursor, conn) # 關閉連線
 
 # 使用 GET 方法(預設)，處理路徑 / 的對應函式
 @app.route("/")
@@ -81,10 +114,12 @@ def signin():
   password = request.form["signinPassword"]
   if check_member(account, password):
     session["sign_in"] = True
+    conn, cursor = getConn() # 建立連線
     cursor.execute("SELECT name FROM member WHERE username = %s", (account,))
     result = cursor.fetchone()
     name = result[0]  # 取得名稱
     session['name'] = name
+    dispose(cursor, conn) # 關閉連線
     return redirect(url_for('member'))
   else:
     return redirect(url_for('error', message='帳號或密碼輸入錯誤'))
@@ -94,8 +129,10 @@ def signin():
 def member():
   if session["sign_in"] == True:
     name = session.get('name', '')  # 從 session 中取得姓名
+    conn, cursor = getConn() # 建立連線
     cursor.execute("SELECT member.name, message.content, message.id FROM member INNER JOIN message ON member.id = message.member_id ORDER BY message.id DESC")
     contentList = cursor.fetchall()
+    dispose(cursor, conn) # 關閉連線
     return render_template('member.html', name=name, contentList=contentList)
   else:
     return redirect(url_for('index'))
@@ -105,17 +142,21 @@ def member():
 def createMessage():
   content = request.form["content"]
   name = session.get('name', '')
+  conn, cursor = getConn() # 建立連線
   cursor.execute("SELECT id FROM member WHERE name = %s", (name,))
   memberId = cursor.fetchone()[0]
   cursor.execute("INSERT INTO message(member_id, content) values (%s, %s)", (memberId, content))
-  con.commit()  # 確定執行資料庫操作
+  conn.commit()
+  dispose(cursor, conn) # 關閉連線
   return redirect(url_for('member'))
 
 # 建立路徑 /deleteMessage 對應的處理函式
 @app.route("/deleteMessage/<int:contentId>")
-def deleteMessage(contentId):  
+def deleteMessage(contentId):
+  conn, cursor = getConn() # 建立連線
   cursor.execute("DELETE FROM message WHERE id = %s", (contentId,))
-  con.commit()  # 確定執行資料庫操作
+  conn.commit()
+  dispose(cursor, conn) # 關閉連線
   return redirect(url_for('member'))
 
 # 建立路徑 /error 對應的處理函式
