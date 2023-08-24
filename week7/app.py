@@ -1,4 +1,5 @@
 import os
+import re
 import json
 from mysql.connector import pooling
 from flask import Flask, Response
@@ -53,6 +54,20 @@ def dispose(cursor, conn):
   conn.close()
   print("關閉連線")
 
+# 使用正則表達式進行帳號格式驗證
+def if_valid_account(account):
+  pattern = "^(?=.*[A-Z])[a-zA-Z0-9]{8,10}$"
+  return re.match(pattern, account)
+
+# 使用正則表達式進行密碼格式驗證
+def if_valid_password(password):
+  pattern = "^(?=.*[A-Z])[a-zA-Z0-9]{8,10}$"
+  return re.match(pattern, password)
+
+def is_chinese(text):
+  pattern = re.compile(r"[\u4e00-\u9fa5]+")
+  return bool(pattern.search(text))
+
 # 檢查帳號是否重複
 def check_account(account):
   conn, cursor = getConn() # 建立連線
@@ -87,6 +102,10 @@ def signup():
   name = request.form["signupName"]
   account = request.form["signupAccount"]
   password = request.form["signupPassword"]
+  if not if_valid_account(account):
+    return redirect(url_for('error', message='帳號格式不符合要求'))
+  if not if_valid_password(password):
+    return redirect(url_for('error', message='密碼格式不符合要求'))
   if check_account(account):
     return redirect(url_for('error', message='帳號已經被註冊'))
   else:
@@ -98,6 +117,10 @@ def signup():
 def signin():
   account = request.form["signinAccount"]
   password = request.form["signinPassword"]
+  if not if_valid_account(account):
+    return redirect(url_for('error', message='帳號格式不符合要求'))
+  if not if_valid_password(password):
+    return redirect(url_for('error', message='密碼格式不符合要求'))
   if check_member(account, password):
     session["sign_in"] = True
     conn, cursor = getConn() # 建立連線
@@ -156,7 +179,7 @@ def api_member_updateName():
     username = session.get("username")
     data = request.get_json()
     newName = data.get("name")
-    if newName:
+    if newName and is_chinese(newName):
       conn, cursor = getConn() # 建立連線
       cursor.execute("UPDATE member SET name = %s WHERE username = %s", (newName, username))
       conn.commit()

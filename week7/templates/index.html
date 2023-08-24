@@ -12,20 +12,20 @@
     <h2>註冊帳號</h2>
     <form action="/signup" method="post" target="_self">
       <label for="signupName">姓名</label>
-      <input id="signupName" type="text" name="signupName" required/><br>
+      <input id="signupName" type="text" name="signupName" pattern="^[\u4e00-\u9fa5]+$" title="請輸入中文" required/><br>
       <label for="signupAccount">帳號</label>
-      <input id="signupAccount" type="text" name="signupAccount" required/><br>
+      <input id="signupAccount" type="text" name="signupAccount" pattern="^(?=.*[A-Z])[a-zA-Z0-9]{8,10}$" title="帳號需由 8~10 位英數字組成，包含至少一個大寫字母，且不可輸入特殊符號" required/><br>
       <label for="signupPassword">密碼</label>
-      <input id="signupPassword" type="password" name="signupPassword" required/><br>
+      <input id="signupPassword" type="password" name="signupPassword" pattern="^(?=.*[A-Z])[a-zA-Z0-9]{8,10}$" title="密碼需由 8~10 位英數字組成，包含至少一個大寫字母，且不可輸入特殊符號" required/><br>
       <input id="signup" type="submit" name="signup" value="註冊">
     </form>
     <hr/>
     <h2>登入系統</h2>
     <form action="/signin" method="post" target="_self">
       <label for="signinAccount">帳號</label>
-      <input id="signinAccount" type="text" name="signinAccount" required/><br>
+      <input id="signinAccount" type="text" name="signinAccount" pattern="^(?=.*[A-Z])[a-zA-Z0-9]{8,10}$" title="帳號需由 8~10 位英數字組成，包含至少一個大寫字母，且不可輸入特殊符號" required/><br>
       <label for="signinPassword">密碼</label>
-      <input id="signinPassword" type="password" name="signinPassword" required/><br>
+      <input id="signinPassword" type="password" name="signinPassword" pattern="^(?=.*[A-Z])[a-zA-Z0-9]{8,10}$" title="密碼需由 8~10 位英數字組成，包含至少一個大寫字母，且不可輸入特殊符號" required/><br>
       <input id="login" type="submit" name="login" value="登入">
     </form>
   </div>

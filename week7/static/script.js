@@ -13,22 +13,43 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-document.getElementById('searchUsername').addEventListener('click', ()=> {
+function updateMemberName(name) {
+  const updateMemberName = document.getElementById('newMemberName');
+  if (updateMemberName) {
+    updateMemberName.textContent = `${name}，歡迎登入系統`;
+  }
+}
+
+document.getElementById('searchUsername').addEventListener('click', () => {
+  const searchUsernameInput = document.getElementById('searchUsernameInput');
+  const isValid = searchUsernameInput.checkValidity();
+  if (!isValid) {
+    const memberData = document.getElementById('memberData');
+    memberData.textContent = searchUsernameInput.validationMessage;
+    return;
+  }
   const searchUsername = document.querySelector('#searchUsernameInput').value;
     if (searchUsername) {
       fetch(`/api/member?username=${searchUsername}`)
         .then(response => response.json())
         .then(data => {
           console.log(data)
-          const memberDataDiv = document.getElementById('memberData');
           const nameValue = data.data.name;
-          memberDataDiv.innerHTML = `<p>${nameValue} (${data.data.username})</p>`
+          memberData.innerHTML = `<p>${nameValue} (${data.data.username})</p>`
         })
         .catch(error => console.error('Error:', error));
   }
-})
+});
 
 document.getElementById('updateName').addEventListener('click', () => {
+  const updateNameInput = document.getElementById('updateNameInput');
+  const isValid = updateNameInput.checkValidity();
+  const updateResult = document.getElementById('updateResult');
+  if (!isValid) {
+    updateResult.textContent = updateNameInput.validationMessage;
+    return;
+  }
+  updateResult.textContent = '';
   const newName = document.querySelector('#updateNameInput').value;
   if (newName) {
     fetch('/api/member', {
@@ -40,21 +61,13 @@ document.getElementById('updateName').addEventListener('click', () => {
     })
     .then(response => response.json())
     .then(data => {
-      const updateResultDiv = document.getElementById('updateResult');
       if (data.ok) {
-        updateResultDiv.textContent = '姓名已成功更新。';
+        updateResult.textContent = '姓名已成功更新。';
         updateMemberName(newName);
       } else {
-        updateResultDiv.textContent = '更新失敗，請確認您已登入。';
+        updateResult.textContent = '更新失敗，請確認您已登入。';
       }
     })
     .catch(error => console.error('Error:', error));
   }
 });
-
-function updateMemberName(name) {
-  const updateMemberName = document.getElementById('newMemberName');
-  if (updateMemberName) {
-    updateMemberName.innerHTML = `<p id="newMemberName">${name}，歡迎登入系統</p>`;
-  }
-}
